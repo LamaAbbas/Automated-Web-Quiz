@@ -1,75 +1,108 @@
 import time
+import random
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
 def main():
+
+    user_agents = ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36", 
+	                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",]
+
     # Setting scraper to its initial position
     options = webdriver.ChromeOptions()
     options.add_argument("start-maximized")
+    options.add_argument("user-agent=" + random.choice(user_agents))
     options.add_argument(r"user-data-dir=C:\Users\lamaa\AppData\Local\Google\Chrome\User Data\Default")
+    options.add_argument("--disable-blink-features=AutomationControlled") 
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    driver = webdriver.Chrome(service=Service(r"C:\\chromedriver.exe"), options=options)
+    options.add_experimental_option("useAutomationExtension", False) 
+    driver = webdriver.Chrome(service = Service(r"C:\\chromedriver.exe"), options = options)
+    driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})") 
     
+    x = random.uniform(1, 2)
+    time.sleep(x)
 
     URL = 'https://www.wizard101.com/game/trivia'
     driver.get(URL)
+    time.sleep(x + 1.25)
+    driver.execute_script("window.scrollTo(0, 1000)") 
+    time.sleep(x)
     get_back_to_page(driver)
 
     login(driver)
 
     # Going through each trivia link
     ki_wanted_text = driver.find_elements(By.XPATH, "//a[@href]")
-    done = False
-    # for element in ki_wanted_text:
+   
+    # Looping through each link to find the ones we care about
     for i in range(0, 96):
         ki_wanted_text = driver.find_elements(By.XPATH, "//a[@href]")
         link = ki_wanted_text[i].get_attribute("href")
         
-        # Opening the first desired trivia
         if "pirate101-adventure" in link:
+            time.sleep(x)
             run_p101_adventuring(driver, link)
+        elif "pirate101-aquila" in link:
+            time.sleep(x +0.25)
+            run_p101_aquila(driver, link)
         elif "wizard101-adventuring" in link:
+            time.sleep(x + 0.5)
             run_w101_adventuring(driver, link)
         elif "wizard101-conjuring" in link:
+            time.sleep(x + 0.75)
             run_w101_conjuring(driver, link)
         elif "wizard101-magical" in link:
+            time.sleep(x + 0.5)
             run_w101_magical(driver, link)
         elif "wizard101-marleybone" in link:
+            time.sleep(x)
             run_w101_marleybone(driver, link)
-        elif "wizard101-mystical" in link:
-            run_w101_mystical(driver, link)
         elif "wizard101-spellbinding" in link:
+            time.sleep(x + 0.75)
             run_w101_spellbinding(driver, link)
         elif "wizard101-spells" in link:
+            time.sleep(x + 0.5)
             run_w101_spells(driver, link)
         elif "wizard101-wizard-city" in link:
+            time.sleep(x)
             run_w101_city(driver, link)
         elif "wizard101-zafaria" in link:
+            time.sleep(x)
             run_w101_zafaria(driver, link)
-            
-    driver.quit()
+
+    time.sleep(2)
+    driver.quit()       
     return 0
 
 
 def get_back_to_page(driver):
+    x = random.uniform(1, 5)
+    time.sleep(x)
+
     link_url = '/quiz/trivia/game/kingsisle-trivia'
     button = driver.find_element(By.XPATH, '//a[@href="{}"]'.format(link_url))
     driver.execute_script("arguments[0].click();", button)
 
 
 def login(driver):
-    username = 'cat2005omar'
-    password = 'La20ooma!'
 
-    # username = 'CutiestLulu2000'
-    # password = 'Lamoushy2000'
+    # username = 'cat2005omar'
+    # password = 'La20ooma!'
 
     # username = 'Lamoushy2000'
     # password = 'La20ooma!'
+    
+    # username = 'CutiestLulu2000'
+    # password = 'Lamoushy2000'
 
-    time.sleep(1)
+    username = "TestingThisAwesomeness"
+    password = "LamaTestingStuff"
+
+    x = random.uniform(1, 2)
+    time.sleep(x)
 
     enter_user = driver.find_element(By.ID, "loginUserName")
     enter_pass = driver.find_element(By.ID, "loginPassword")
@@ -77,15 +110,15 @@ def login(driver):
 
     enter_user.send_keys(username)
 
-    time.sleep(1)
+    time.sleep(x + 0.5)
 
     enter_pass.send_keys(password)
 
-    time.sleep(1)
+    time.sleep(x + 0.75)
 
     driver.execute_script("arguments[0].click();", submit) 
 
-    time.sleep(1)
+    time.sleep(x)
     return 0
 
 
@@ -99,27 +132,28 @@ def quiz_completion(driver):
     iframe = driver.find_element(By.NAME, "jPopFrame_content")
     driver.switch_to.frame(iframe)
     
-    time.sleep(2)
+    x = random.uniform(1, 3)
+    time.sleep(x)
 
     submit = driver.find_element(By.CLASS_NAME, "buttonsubmit")
     driver.execute_script("arguments[0].click();", submit)
 
-    # time.sleep(10)
-    # if CAPTCHA occurs
+    # If CAPTCHA occurs
     try:
-        time.sleep(5)
-        # captcha = driver.find_element(By.ID, "rc-imageselect")
-        # captcha = driver.find_element(By.CLASS_NAME, "rc-imageselect-instructions")
+        captcha_iframe = driver.find_element(By.XPATH, "//iframe[@title='recaptcha challenge expires in two minutes']")
+        driver.switch_to.frame(captcha_iframe)
         captcha = driver.find_element(By.CLASS_NAME, "rc-imageselect-challenge")
         print("CAPTCHA detected.")
         input("Press ENTER when you've submitted the CAPTCHA: ")
         print("Proceeding!")
+
+        driver.switch_to.parent_frame()
     except NoSuchElementException:
         print("No CAPTCHA found.")
     
     driver.switch_to.default_content()
 
-    time.sleep(1)
+    time.sleep(x + 0.5)
 
     # "Take another quiz"
     button = driver.find_element(By.CLASS_NAME, "kiaccountsbuttongreen")
@@ -128,7 +162,98 @@ def quiz_completion(driver):
     get_back_to_page(driver)
 
 
+def run_p101_aquila(driver, trivia_url):
+
+    time.sleep(0.5)  
+
+    trivia = driver.find_element(By.XPATH, '//a[@href="{}"]'.format(trivia_url))
+    driver.execute_script("arguments[0].click();", trivia)
+
+    current_answer = ''
+    for i in range(0, 13):
+        question = driver.find_element(By.CLASS_NAME, "quizQuestion")
+        question_list = question.text.split()
+        
+        answers = driver.find_elements(By.CLASS_NAME, "answerText")
+        buttons = driver.find_elements(By.NAME, "checkboxtag")
+        answer_dict = {}
+        for i in range(0, 4):
+            answer_dict[answers[i].text] = buttons[i]
+
+        if "How" in question_list:
+            if "copper" in question_list:
+                current_answer = '6'
+            elif "memories" in question_list:
+                current_answer = '5'
+            elif "Machina" in question_list:
+                current_answer = '6'
+
+        elif "What" in question_list:
+            if "Motomori" in question_list:
+                current_answer = 'Grape Tomatoes'
+            elif "creature" in question_list:
+                current_answer = 'Ettin'
+            elif "describes" in question_list:
+                current_answer = 'Orthoi'
+            elif "Laestryonian" in question_list:
+                current_answer = "All the Spiral's a Stage"
+            elif "claim" in question_list:
+                current_answer = 'Statue'
+        
+        elif "Which" in question_list:
+            if "outside" in question_list:
+                current_answer = 'Centaur'
+            elif "color" in question_list:
+                current_answer = 'Green'
+            elif "Raven" in question_list:
+                current_answer = 'Madea'
+            elif "Emperor?" in question_list:
+                current_answer = 'Tibirdius'
+            elif "Birdhouse" in question_list:
+                current_answer = 'Ebon Stymphalian'
+        
+        elif "Where" in question_list:
+            if "Pitch" in question_list:
+                current_answer = 'Illios'
+            elif "Vault" in question_list:
+                current_answer = 'Delphos'
+
+        elif "Who" in question_list:
+            current_answer = 'Phoebus'
+
+        elif "Ettin" in question_list:
+            current_answer = 'Flanking'
+        
+        elif "From" in question_list:
+            current_answer = 'Ophidian Ships'
+
+        elif "Grape" in question_list:
+            current_answer = 'Satyrs'
+        
+        elif "Vulture" in question_list:
+            current_answer = 'Banditti'
+        
+        
+        if current_answer in answer_dict:
+            driver.execute_script("arguments[0].click();", answer_dict[current_answer])
+
+        time.sleep(1)
+
+        # Click next
+        next = driver.find_element(By.ID, "nextQuestion")
+        driver.execute_script("arguments[0].click();", next)
+
+        x = random.uniform(5, 7)
+        time.sleep(x)
+
+    quiz_completion(driver)
+    return 0
+
+
 def run_p101_adventuring(driver, trivia_url):
+
+    driver.execute_script("window.scrollTo(0, 50)")
+    time.sleep(2.5) 
 
     trivia = driver.find_element(By.XPATH, '//a[@href="{}"]'.format(trivia_url))
     driver.execute_script("arguments[0].click();", trivia)
@@ -192,20 +317,24 @@ def run_p101_adventuring(driver, trivia_url):
 
         if current_answer in answer_dict:
             driver.execute_script("arguments[0].click();", answer_dict[current_answer])
-
+        
         time.sleep(1)
 
         # Click next
         next = driver.find_element(By.ID, "nextQuestion")
         driver.execute_script("arguments[0].click();", next)
 
-        time.sleep(5)
+        x = random.uniform(5, 7)
+        time.sleep(x)
 
     quiz_completion(driver)
     return 0
 
 
 def run_w101_adventuring(driver, trivia_url):
+
+    driver.execute_script("window.scrollTo(0, 2400)") 
+    time.sleep(2.5) 
 
     trivia = driver.find_element(By.XPATH, '//a[@href="{}"]'.format(trivia_url))
     driver.execute_script("arguments[0].click();", trivia)
@@ -280,13 +409,17 @@ def run_w101_adventuring(driver, trivia_url):
         next = driver.find_element(By.ID, "nextQuestion")
         driver.execute_script("arguments[0].click();", next)
 
-        time.sleep(5)
+        x = random.uniform(5, 7)
+        time.sleep(x)
 
     quiz_completion(driver)
     return 0
 
 
 def run_w101_conjuring(driver, trivia_url):
+
+    driver.execute_script("window.scrollTo(0, 2400)")
+    time.sleep(2.5)  
 
     trivia = driver.find_element(By.XPATH, '//a[@href="{}"]'.format(trivia_url))
     driver.execute_script("arguments[0].click();", trivia)
@@ -346,13 +479,17 @@ def run_w101_conjuring(driver, trivia_url):
         next = driver.find_element(By.ID, "nextQuestion")
         driver.execute_script("arguments[0].click();", next)
 
-        time.sleep(5)
+        x = random.uniform(5, 7)
+        time.sleep(x)
 
     quiz_completion(driver)
     return 0
 
 
 def run_w101_magical(driver, trivia_url):
+
+    driver.execute_script("window.scrollTo(0, 2500)") 
+    time.sleep(2.5) 
 
     trivia = driver.find_element(By.XPATH, '//a[@href="{}"]'.format(trivia_url))
     driver.execute_script("arguments[0].click();", trivia)
@@ -369,7 +506,7 @@ def run_w101_magical(driver, trivia_url):
             answer_dict[answers[i].text] = buttons[i]
 
         if "Who" in question_list:
-            if "prophesizes" in question_list:
+            if "prophesizes" in question_list: # ["what", "is", "you", "pooper", ]
                 current_answer = 'Morganthe'
             elif "Registrar" in question_list:
                 current_answer = 'Mrs. Dowager'
@@ -411,7 +548,7 @@ def run_w101_magical(driver, trivia_url):
             if "afraid" in question_list:
                 current_answer = 'Witches'
             elif "pixies" in question_list:
-                current_answer = 'Rattlebones corrupted them'
+                current_answer = 'Rattlebones corrupted them.'
 
         elif "Zafaria" in question_list:
             current_answer = 'Gorillas, Zebras, Lions'
@@ -431,13 +568,17 @@ def run_w101_magical(driver, trivia_url):
         next = driver.find_element(By.ID, "nextQuestion")
         driver.execute_script("arguments[0].click();", next)
 
-        time.sleep(5)
+        x = random.uniform(5, 7)
+        time.sleep(x)
 
     quiz_completion(driver)
     return 0
 
 
 def run_w101_marleybone(driver, trivia_url):
+
+    driver.execute_script("window.scrollTo(0, 2500)") 
+    time.sleep(2.5) 
 
     trivia = driver.find_element(By.XPATH, '//a[@href="{}"]'.format(trivia_url))
     driver.execute_script("arguments[0].click();", trivia)
@@ -512,97 +653,17 @@ def run_w101_marleybone(driver, trivia_url):
         next = driver.find_element(By.ID, "nextQuestion")
         driver.execute_script("arguments[0].click();", next)
 
-        time.sleep(5)
-
-    quiz_completion(driver)
-    return 0
-
-
-def run_w101_mystical(driver, trivia_url):
-
-    trivia = driver.find_element(By.XPATH, '//a[@href="{}"]'.format(trivia_url))
-    driver.execute_script("arguments[0].click();", trivia)
-
-    current_answer = ''
-    for i in range(0, 13):
-        question = driver.find_element(By.CLASS_NAME, "quizQuestion")
-        question_list = question.text.split()
-        
-        answers = driver.find_elements(By.CLASS_NAME, "answerText")
-        buttons = driver.find_elements(By.NAME, "checkboxtag")
-        answer_dict = {}
-        for i in range(0, 4):
-            answer_dict[answers[i].text] = buttons[i]
-
-        if "Who" in question_list:
-            if "tells" in question_list:
-                current_answer = 'Harold Argleston'
-            elif "Tomb" in question_list:
-                current_answer = "Hetch Al'Dim"
-            elif "permission" in question_list:
-                current_answer = 'Sergent Major Talbot'
-            elif "River" in question_list:
-                current_answer = 'Charon'
-            elif "Gladiator" in question_list:
-                current_answer = 'Dimachaerus'  
-            elif "Emperor" in question_list:
-                current_answer = 'Noboru Akitame'
-            elif "asks" in question_list:
-                current_answer = 'Eloise Merryweather'
-            elif "Falynn" in question_list:
-                current_answer = 'Sir Malick de Logres'
-            elif "haunts" in question_list:
-                current_answer = 'Nosferabbit'
-            elif "guard" in question_list:
-                current_answer = 'The Knights of the Silver Rose'
-
-        elif "What" in question_list:
-            if "travel" in question_list:
-                current_answer = 'Ice Archway'
-            elif "Ponce" in question_list:
-                current_answer = 'The Water of Life'
-
-        elif "Which" in question_list:
-            current_answer = "Jaques the Scatcher"
-
-        elif "Where" in question_list:
-            current_answer = 'Wizard City'
-
-        elif "Zenzen" in question_list:
-            current_answer = 'Grandfather'
-        
-        elif "Axaya" in question_list:
-            current_answer = 'The Badge of Leadership'
-        
-        elif "Hrundle" in question_list:
-            current_answer = 'Wintertusk'
-        
-        elif "Professor" in question_list:
-            current_answer = 'Telegraph Box'
-
-        elif "Pigswick" in question_list: ######################################## BROKEN #########################################
-            current_answer = "Equilibrium"
-        
-        elif "Spider" in question_list:
-            current_answer = 'Zafaria'
-
-
-        if current_answer in answer_dict:
-            driver.execute_script("arguments[0].click();", answer_dict[current_answer])
-
-        time.sleep(1)
-
-        # Click next
-        next = driver.find_element(By.ID, "nextQuestion")
-        driver.execute_script("arguments[0].click();", next)
-
-        time.sleep(5)
+        x = random.uniform(5, 7)
+        time.sleep(x)
 
     quiz_completion(driver)
     return 0
 
 
 def run_w101_spellbinding(driver, trivia_url):
+
+    driver.execute_script("window.scrollTo(0, 2700)") 
+    time.sleep(2.5) 
 
     trivia = driver.find_element(By.XPATH, '//a[@href="{}"]'.format(trivia_url))
     driver.execute_script("arguments[0].click();", trivia)
@@ -677,13 +738,17 @@ def run_w101_spellbinding(driver, trivia_url):
         next = driver.find_element(By.ID, "nextQuestion")
         driver.execute_script("arguments[0].click();", next)
 
-        time.sleep(5)
+        x = random.uniform(5, 7)
+        time.sleep(x)
 
     quiz_completion(driver)
     return 0
 
 
 def run_w101_spells(driver, trivia_url):
+
+    driver.execute_script("window.scrollTo(0, 2800)") 
+    time.sleep(2.5) 
 
     trivia = driver.find_element(By.XPATH, '//a[@href="{}"]'.format(trivia_url))
     driver.execute_script("arguments[0].click();", trivia)
@@ -763,13 +828,17 @@ def run_w101_spells(driver, trivia_url):
         next = driver.find_element(By.ID, "nextQuestion")
         driver.execute_script("arguments[0].click();", next)
 
-        time.sleep(5)
+        x = random.uniform(5, 7)
+        time.sleep(x)
 
     quiz_completion(driver)
     return 0
 
 
 def run_w101_city(driver, trivia_url):
+
+    driver.execute_script("window.scrollTo(0, 2800)") 
+    time.sleep(2.5) 
 
     trivia = driver.find_element(By.XPATH, '//a[@href="{}"]'.format(trivia_url))
     driver.execute_script("arguments[0].click();", trivia)
@@ -818,7 +887,7 @@ def run_w101_city(driver, trivia_url):
                 current_answer = 'A spade'
             elif "stockpiling" in question_list:
                 current_answer = 'Broccoli'
-            elif "Gemstone" in question_list:
+            elif "gemstone" in question_list:
                 current_answer = 'Citrine'
             elif "Malorn" in question_list:
                 current_answer = 'Death'
@@ -839,13 +908,17 @@ def run_w101_city(driver, trivia_url):
         next = driver.find_element(By.ID, "nextQuestion")
         driver.execute_script("arguments[0].click();", next)
 
-        time.sleep(5)
+        x = random.uniform(5, 7)
+        time.sleep(x)
 
     quiz_completion(driver)
     return 0
 
 
 def run_w101_zafaria(driver, trivia_url):
+
+    driver.execute_script("window.scrollTo(0, 2900)") 
+    time.sleep(2.5) 
 
     trivia = driver.find_element(By.XPATH, '//a[@href="{}"]'.format(trivia_url))
     driver.execute_script("arguments[0].click();", trivia)
@@ -878,14 +951,17 @@ def run_w101_zafaria(driver, trivia_url):
         elif "Reginal" in question_list:
             current_answer = 'Mondli Greenhoof'
 
-        elif "legendary" in question_list:
+        elif "called:" in question_list:
             current_answer = 'The Sword of the Duelist'
+
+        elif "forged:" in question_list:
+            current_answer = 'In the halls of Valencia'
 
         elif "Jambo" in question_list:
             current_answer = 'Hello.'
 
         elif "Baobab" in question_list:
-            current_answer = 'A Council of three councilors'
+            current_answer = 'A Council of three councilors.'
         
         elif "assassin" in question_list:
             current_answer = 'Karl the Jackal'
@@ -894,7 +970,7 @@ def run_w101_zafaria(driver, trivia_url):
             current_answer = 'Djembe Drum'
         
         elif "Unathi" in question_list:
-            current_answer = 'A councilor of Baobab'
+            current_answer = 'A councilor of Baobab.'
         
         elif "Ravagers" in question_list:
             current_answer = 'Nergal the Burned Lion'
@@ -927,7 +1003,8 @@ def run_w101_zafaria(driver, trivia_url):
         next = driver.find_element(By.ID, "nextQuestion")
         driver.execute_script("arguments[0].click();", next)
 
-        time.sleep(5)
+        x = random.uniform(5, 7)
+        time.sleep(x)
 
     quiz_completion(driver)
     return 0
