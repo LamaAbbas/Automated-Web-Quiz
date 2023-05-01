@@ -1,5 +1,6 @@
 import time
 import random
+import winsound
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -72,8 +73,12 @@ def main():
         elif "wizard101-zafaria" in link:
             time.sleep(x)
             run_w101_zafaria(driver, link)
-
+    
+    frequency = 2000
+    duration = 1000
+    winsound.Beep(frequency, duration)
     time.sleep(2)
+    
     driver.quit()       
     return 0
 
@@ -89,8 +94,11 @@ def get_back_to_page(driver):
 
 def login(driver):
 
-    # username = 'cat2005omar'
-    # password = 'La20ooma!'
+    # username = "user1"
+    # password = "pass1"
+
+    username = 'cat2005omar'
+    password = 'La20ooma!'
 
     # username = 'Lamoushy2000'
     # password = 'La20ooma!'
@@ -98,8 +106,11 @@ def login(driver):
     # username = 'CutiestLulu2000'
     # password = 'Lamoushy2000'
 
-    username = "TestingThisAwesomeness"
-    password = "LamaTestingStuff"
+    # username = "TestingThisAwesomeness"
+    # password = "LamaTestingStuff"
+
+    # username = "TestingSounds"
+    # password = "LamaTestingStuff"
 
     x = random.uniform(1, 2)
     time.sleep(x)
@@ -143,6 +154,9 @@ def quiz_completion(driver):
         captcha_iframe = driver.find_element(By.XPATH, "//iframe[@title='recaptcha challenge expires in two minutes']")
         driver.switch_to.frame(captcha_iframe)
         captcha = driver.find_element(By.CLASS_NAME, "rc-imageselect-challenge")
+        frequency = 2000
+        duration = 500
+        winsound.Beep(frequency, duration)
         print("CAPTCHA detected.")
         input("Press ENTER when you've submitted the CAPTCHA: ")
         print("Proceeding!")
