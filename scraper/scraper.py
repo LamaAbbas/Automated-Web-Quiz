@@ -9,8 +9,15 @@ from selenium.common.exceptions import NoSuchElementException
 def main():
 
     user_agents = ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
                     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36", 
-	                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",]
+	                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+                    ]
 
     # Setting scraper to its initial position
     options = webdriver.ChromeOptions()
@@ -38,41 +45,47 @@ def main():
     # Going through each trivia link
     ki_wanted_text = driver.find_elements(By.XPATH, "//a[@href]")
    
-    # Looping through each link to find the ones we care about
-    for i in range(0, 96):
-        ki_wanted_text = driver.find_elements(By.XPATH, "//a[@href]")
-        link = ki_wanted_text[i].get_attribute("href")
-        
-        if "pirate101-adventure" in link:
-            time.sleep(x)
-            run_p101_adventuring(driver, link)
-        elif "pirate101-aquila" in link:
-            time.sleep(x +0.25)
-            run_p101_aquila(driver, link)
-        elif "wizard101-adventuring" in link:
-            time.sleep(x + 0.5)
-            run_w101_adventuring(driver, link)
-        elif "wizard101-conjuring" in link:
-            time.sleep(x + 0.75)
-            run_w101_conjuring(driver, link)
-        elif "wizard101-magical" in link:
-            time.sleep(x + 0.5)
-            run_w101_magical(driver, link)
-        elif "wizard101-marleybone" in link:
-            time.sleep(x)
-            run_w101_marleybone(driver, link)
-        elif "wizard101-spellbinding" in link:
-            time.sleep(x + 0.75)
-            run_w101_spellbinding(driver, link)
-        elif "wizard101-spells" in link:
-            time.sleep(x + 0.5)
-            run_w101_spells(driver, link)
-        elif "wizard101-wizard-city" in link:
-            time.sleep(x)
-            run_w101_city(driver, link)
-        elif "wizard101-zafaria" in link:
-            time.sleep(x)
-            run_w101_zafaria(driver, link)
+    try:
+        # Looping through each link to find the ones we care about
+        for i in range(0, 96):
+            ki_wanted_text = driver.find_elements(By.XPATH, "//a[@href]")
+            link = ki_wanted_text[i].get_attribute("href")
+            
+            if "pirate101-adventure" in link:
+                time.sleep(x)
+                run_p101_adventuring(driver, link)
+            elif "pirate101-aquila" in link:
+                time.sleep(x +0.25)
+                run_p101_aquila(driver, link)
+            elif "wizard101-adventuring" in link:
+                time.sleep(x + 0.5)
+                run_w101_adventuring(driver, link)
+            elif "wizard101-conjuring" in link:
+                time.sleep(x + 0.75)
+                run_w101_conjuring(driver, link)
+            elif "wizard101-magical" in link:
+                time.sleep(x + 0.5)
+                run_w101_magical(driver, link)
+            elif "wizard101-marleybone" in link:
+                time.sleep(x)
+                run_w101_marleybone(driver, link)
+            elif "wizard101-spellbinding" in link:
+                time.sleep(x + 0.75)
+                run_w101_spellbinding(driver, link)
+            elif "wizard101-spells" in link:
+                time.sleep(x + 0.5)
+                run_w101_spells(driver, link)
+            elif "wizard101-wizard-city" in link:
+                time.sleep(x)
+                run_w101_city(driver, link)
+            elif "wizard101-zafaria" in link:
+                time.sleep(x)
+                run_w101_zafaria(driver, link)
+    except NoSuchElementException:
+        frequency = 2000
+        duration = 2000
+        winsound.Beep(frequency, duration)
+        input("Problem")
     
     frequency = 2000
     duration = 1000
@@ -97,14 +110,14 @@ def login(driver):
     # username = "user1"
     # password = "pass1"
 
-    username = 'cat2005omar'
-    password = 'La20ooma!'
+    # username = 'cat2005omar'
+    # password = 'La20ooma!'
 
     # username = 'Lamoushy2000'
     # password = 'La20ooma!'
     
-    # username = 'CutiestLulu2000'
-    # password = 'Lamoushy2000'
+    username = 'CutiestLulu2000'
+    password = 'Lamoushy2000'
 
     # username = "TestingThisAwesomeness"
     # password = "LamaTestingStuff"
@@ -1025,3 +1038,4 @@ def run_w101_zafaria(driver, trivia_url):
 
 
 main()
+
