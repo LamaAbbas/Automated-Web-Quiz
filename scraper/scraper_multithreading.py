@@ -94,6 +94,7 @@ def open_browser(login_details):
         winsound.Beep(frequency, duration)
         input("Problem")
     
+    print("Completed")
     frequency = 2000
     duration = 1000
     winsound.Beep(frequency, duration)
@@ -159,7 +160,7 @@ def quiz_completion(driver):
         frequency = 2000
         duration = 500
         winsound.Beep(frequency, duration)
-        print("CAPTCHA detected.")
+        print("CAPTCHA detected for {}.".format(thread.name))
         input("Press ENTER when you've submitted the CAPTCHA: ")
         print("Proceeding!")
 
@@ -1028,12 +1029,11 @@ def run_w101_zafaria(driver, trivia_url):
 
 if __name__=="__main__":
     threads = list()
-    
     # tuples of ("username","password")
     login_list = [] 
 
     for i in range(len(login_list)):
-        thread = threading.Thread(target=open_browser, args=(login_list[i],))
+        thread = threading.Thread(name=login_list[i][0], target=open_browser, args=(login_list[i],))
         thread.start()
         time.sleep(2)
         threads.append(thread)
