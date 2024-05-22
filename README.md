@@ -44,3 +44,9 @@ LOGIN_PASSWORD_2="password2"
 LOGIN_USERNAME_X="usernameX"
 LOGIN_PASSWORD_X="passwordX"
 ```
+
+Finally, run the script in terminal:
+```bash
+python3 .\main.py
+```
+If there are any problems, let me know. Otherwise, enjoy, and keep it discreet!
