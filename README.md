@@ -26,9 +26,9 @@ Once ```pip``` is installed, you can now proceed installing the following:
 pip install selenium
 pip install python-dotenv
 ```
-If I have forgotten anything and it is not working due to missing installtions, shoot me a message!!
+If I have forgotten anything and it is not working due to missing installations, shoot me a message!!
 
-Finally, to set-up your accounts, you will need to create the file containing your login username(s) and password(s) in the same folder as the script. Create a new textfile and name it ```.env```.
+Finally, to set-up your accounts, you will need to create the file containing your login username(s) and password(s) in the same folder as the script. Create a new text file and name it ```.env```.
 
 Populate it with your logins in the **following format exactly** where X is the number of accounts desired to run the script:
 ```bash
