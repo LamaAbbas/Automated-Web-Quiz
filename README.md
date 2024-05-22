@@ -1,5 +1,4 @@
 # Automated-Web-Quiz
-### Developed by Lama
 This Python script runs an automated web scraper that navigates the homepage of the Wizard101 website to complete the daily allowance of trivia quizzes without human intervention. The program mainly leverages the Selenium library to parse through the quizzes, and detects reCAPTCHAs for the user to complete. I have included multi-threading capability to run multiple accounts in parallel.
 
 The program is still a work-in-progress to iron out the wrinkles as well as finish the transition to JSON integration, increased efficiency, and heightened coding conventions.
