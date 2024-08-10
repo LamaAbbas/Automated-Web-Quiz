@@ -108,14 +108,12 @@
     ],
 
     "wizard101-marleybone" : [
-        {"What color are the Marleybone mailboxes?" : "Red"},
-        {"Which is not a street in Regent's Square?" : "Fleabitten Ave"},
         {"Who is not an officer you'll find around Marleybone?" : "Officer Digmore"},
+        {"Who is the dangerous criminal that is locked up, but escapes from Newgate Prison?" : "Meowiarty"},
+        {"What color are the Marleybone mailboxes?" : "Red"},
         {"What style of artifacts are in the Royal Museum?" : "Krokotopian"},
-        {"Which symbol is not on the stained glass window in Regent's Square?" : "A Tennis Ball"},
         {"What is flying around in Regent's Square?" : "Newspapers"},
         {"What time of day is it always in Marleybone?" : "Night"},
-        {"Who is the dangerous criminal that is locked up, but escapes from Newgate Prison?" : "Meowiarty"},
         {"What course did Herold Digmoore study?" : "Ancient Myths for Parliament"},
         {"What is a very common last name of the cats in Marleybone?" : "O'Leary"},
         {"What two names are on the Statues in the Marleybone cathedral?" : "Saint Bernard and Saint Hubert"},
@@ -123,13 +121,13 @@
         {"What event is Abigail Doolittle sending out invitations for?" : "Policeman's Ball"},
         {"What sort of beverage is served in Air Dales Hideaway?" : "Root Beer"},
         {"What initials were on the doctor's glove?" : "XX"},
-        {"Arthur Wethersfield is A:.." : "Dog"},
         {"What time does the clock always read in Marleybone?" : "1:55"},
         {"What is Sgt. Major Talbot's full name?" : "Sylvester Quimby Talbot III"},
         {"What transports you from place to place in Marleybone?" : "Hot Air Balloons"},
+        {"Which symbol is not on the stained glass window in Regent's Square?" : "A Tennis Ball"},
+        {"Which is not a street in Regent's Square?" : "Fleabitten Ave"},
         {"Which of these folks can you find in the Royal Museum?" : "Clancy Pembroke"},
-        
-        {"sample" : "sample"}
+        {"Arthur Wethersfield is A:.." : "Dog"}
     ],
 
     "wizard101-spellbinding" : [
@@ -195,16 +193,16 @@
         {"What are the school colors of Balance?" : "Tan and Maroon"},
         {"What school does Malorn Ashthorn think is the best?" : "Death"},
         {"What is Diego's full name?" : "Diego Santiago Ramirez Quariquez the Third"},
-        {"Where is Sabrina Greenstar?" : "Fairegrounds"},
-        
-        {"sample" : "sample"},
-        {"sample" : "sample"},
-        {"sample" : "sample"}
+        {"What is the gemstone for Balance?" : "Citrine"},
+        {"What is Mindy's last name (she's on Colossus Blvd)?" : "Pixiecrown"},
+        {"What is the name of the bridge in front of the Cave to Nightside?" : "Rainbow Bridge"},
+        {"Where is Sabrina Greenstar?" : "Fairegrounds"}
     ],
 
     "wizard101-zafaria" : [
         {"Who are Hannibal Onetusk's brother and co-pilot?" : "Mago and Sobaka"},
         {"Who is not one of the Zebu Kings:" : "Zaffe Zoffer"},
+        {"Who is the missing prince?" : "Tiziri Silvertusk"},
         {"What does Lethu Blunthoof says about Ghostmanes?" : "You never can tell with them!"},
         {"Vir Goodheart is an assistant to:" : "Rasik Pridefall"},
         {"Belloq is first found in:" : "The Sook"},
@@ -219,10 +217,8 @@
         {"The Fire Lion Ravagers are led by:" : "Nergal the Burned Lion"},
         {"Unathi Nightrunner is:" : "A councilor of Baobab."},
         {"The Inzinzebu Bandits are harassing the good merchants in:" : "Baobab Market"},
-        
-        {"sample" : "sample"},
-        {"sample" : "sample"},
-        {"sample" : "sample"},
-        {"sample" : "sample"}
+        {"Zamunda's great assassin is known as:" : "Karl the Jackal"},
+        {"Inyanga calls Umlio a:" : "Fire feather"},
+        {"Baobab is governed by:" : "A Council of three councilors."}
     ]
 }

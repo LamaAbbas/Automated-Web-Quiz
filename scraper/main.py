@@ -14,16 +14,16 @@ def open_browser(login_details):
     frequency = 2000 
 
     # Assists in avoiding timed out requests from duplicate user agents, preventing detection
-    user_agents = ["Mozilla/6.0 (Windows NT 10.0; Win64; x64) AppleWebKit/638.36 (KHTML, like Gecko) Chrome/68.0.3029.110 Safari/638.3",
-                    "Mozilla/6.0 (Windows NT 10.0; Win64; x64) AppleWebKit/638.36 (KHTML, like Gecko) Chrome/99.0.4844.61 Safari/638.36",
-                    "Mozilla/6.0 (Windows NT 10.0; Win64; x64) AppleWebKit/638.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/638.36",
-                    "Mozilla/6.0 (Windows NT 10.0; Win64; x64) AppleWebKit/638.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/638.36", 
-	                "Mozilla/6.0 (Windows NT 10.0; Win64; x64) AppleWebKit/638.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/638.36",
-                    "Mozilla/6.0 (Windows NT 10.0; Win64; x64) AppleWebKit/638.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/638.36",
-                    "Mozilla/6.0 (Windows NT 10.0; Win64; x64) AppleWebKit/638.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/638.36",
-                    "Mozilla/6.0 (Windows NT 10.0; Win64; x64) AppleWebKit/638.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/638.36",
-                    "Mozilla/6.0 (Windows NT 10.0; Win64; x64) AppleWebKit/638.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/638.36"
-                    ]
+    user_agents = [ "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.3",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.3",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 OPR/106.0.0.",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10532",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.13 Safari/537.36",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.22 Safari/537.36",]
     this_user = random.choice(user_agents)
     print(this_user)
     
@@ -75,10 +75,11 @@ def open_browser(login_details):
                     process_quiz(driver, link, data, quiz_name)
                     break
             
-    except NoSuchElementException:
+    except NoSuchElementException as e:
         duration = 2000
         winsound.Beep(frequency, duration)
         input("Problem with {}".format(threading.current_thread().name))
+        print(e)
     
     print("Completed")
     duration = 1000
@@ -105,16 +106,12 @@ def login(driver, login_details):
     submit = driver.find_element(By.XPATH, "//input[@type='submit']")
 
     enter_user.send_keys(login_details[0])
-
     time.sleep(x * 2)
-
     enter_pass.send_keys(login_details[1])
-
     time.sleep(x * 1.5)
-
     driver.execute_script("arguments[0].click();", submit) 
-
     time.sleep(x * 1.25)
+
     return 0
 
 def process_quiz(driver, link, data, quiz_name):
@@ -131,12 +128,23 @@ def process_quiz(driver, link, data, quiz_name):
         answers = driver.find_elements(By.CLASS_NAME, "answerText")
         buttons = driver.find_elements(By.NAME, "checkboxtag")
         answer_dict = {}
+        answers_text = {}
+
         for i in range(0, 4):
-            answer_dict[answers[i].text] = buttons[i]
+            # This is necessary in order to correctly replace the special character
+            # I know this is very silly but it had to be done
+            answers_text[i] = answers[i].text
+
+            # For the special case of having a weird character that breaks everything
+            char_found = answers_text[i].find('�')
+            if char_found != -1:
+                answers_text[i] = answers_text[i].replace('�', '-')
+
+            answer_dict[answers_text[i]] = buttons[i]
 
         for pair in data[quiz_name]:
             for key in pair:
-                if  key == question:
+                if  question in key:
                     current_answer = pair[key]
 
         if current_answer in answer_dict:
@@ -172,6 +180,7 @@ def quiz_completion(driver):
 
     # If CAPTCHA occurs
     try:
+        # rarely does not catch -------------------
         captcha_iframe = driver.find_element(By.XPATH, "//iframe[@title='recaptcha challenge expires in two minutes']")
         driver.switch_to.frame(captcha_iframe)
         captcha = driver.find_element(By.CLASS_NAME, "rc-imageselect-challenge")
